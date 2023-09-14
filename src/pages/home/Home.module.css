@@ -5,3 +5,27 @@ section {
     justify-content: center;
     align-items: center;
 }
+
+.entrada {
+    display: flex;
+    padding: 10px;
+    border: 1px solid lightgray;
+    border-radius: 10px;
+    margin-right: 5vw;
+}
+
+.saida {
+    display: flex;
+    padding: 10px;
+    border: 1px solid lightgray;
+    border-radius: 10px;
+    margin-left: 5vw;
+}
+
+.input {
+    margin: 5px;
+}
+
+.select {
+    margin: 5px;
+}
