@@ -3,87 +3,111 @@ import { Select, InputNumber } from 'antd';
 import React, { useState, useEffect } from 'react';
 
 function Home() {
-    const [conversao, setConversao] = useState({
-        moeda1: 'Real',
-        moeda2: 'Real',
-        valor1: 0,
-        valor2: 0,
-    });
 
-    const taxasDeCambio = {
-        'Real-Dólar': 0.23,
-        'Real-Euro': 0.19,
-        'Dólar-Real': 4.36,
-        'Dólar-Euro': 0.83,
-        'Euro-Real': 5.25,
-        'Euro-Dólar': 1.21,
-        // Adicione mais combinações conforme necessário
-    };
+    const [moedaInicial, setMoedaInicial] = useState('Real');
+    const [moedaFinal, setMoedaFinal] = useState('Real');
+    const [valorAConverter, setValorAConverter] = useState(0);
+    const [valorConvertido, setValorConvertido] = useState(0);
+
+    const selecionado1 = (value) => {
+        setMoedaInicial(value)
+    }    
+
+    const selecionado2 = (value) => {
+        setMoedaFinal(value)
+    }
 
     useEffect(() => {
-        const { moeda1, moeda2, valor1 } = conversao;
-        const combinacao = `${moeda1}-${moeda2}`;
+        converter();
+    }, [moedaInicial, moedaFinal, valorAConverter]);
 
-        if (taxasDeCambio.hasOwnProperty(combinacao)) {
-            const taxaDeCambio = taxasDeCambio[combinacao];
-            const valorConvertido = parseFloat(valor1) * taxaDeCambio;
-            setConversao({ ...conversao, valor2: valorConvertido.toFixed(2) });
-        } else {
-            console.error("Combinação de moedas não suportada.");
+    function converter() {
+
+        if (moedaInicial === 'Real') {
+            if (moedaFinal === 'Real') {
+                setValorConvertido(valorAConverter * 1)
+            }
+            if (moedaFinal === 'Dólar') {
+                setValorConvertido(valorAConverter * 0.21)
+            }
+            if (moedaFinal === 'Euro') {
+                setValorConvertido(valorAConverter * 0.19)
+            }
+        } else if (moedaInicial === 'Dólar') {
+            if (moedaFinal === 'Real') {
+                setValorConvertido(valorAConverter * 4.87)
+            }
+            if (moedaFinal === 'Dólar') {
+                setValorConvertido(valorAConverter * 1)
+            }
+            if (moedaFinal === 'Euro') {
+                setValorConvertido(valorAConverter * 0.91)
+            }
+        } else if (moedaInicial === 'Euro') {
+            if (moedaFinal === 'Real') {
+                setValorConvertido(valorAConverter * 5.19)
+            }
+            if (moedaFinal === 'Dólar') {
+                setValorConvertido(valorAConverter * 1.07)
+            }
+            if (moedaFinal === 'Euro') {
+                setValorConvertido(valorAConverter * 1)
+            }
         }
-    }, [conversao]);
-
-    const handleChangeMoeda = (field, value) => {
-        setConversao({ ...conversao, [field]: value });
-    };
-
-    const handleChangeValor = (field, value) => {
-        setConversao({ ...conversao, [field]: value });
-    };
+    }
 
     return (
-        <section>
+        <section className={styles.secHome}>
             <div className={styles.entrada}>
-                <Select
-                    className={styles.select}
+                <Select className={styles.select}
                     defaultValue="Real"
-                    style={{ width: 120 }}
-                    onChange={(value) => handleChangeMoeda('moeda1', value)}
+                    style={{
+                        width: 120,
+                    }}
+                    onChange={selecionado1}
                     options={[
-                        { value: 'Real', label: 'Real' },
-                        { value: 'Dólar', label: 'Dólar' },
-                        { value: 'Euro', label: 'Euro' },
-                        // Adicione mais moedas conforme necessário
+                        {
+                        value: 'Real',
+                        label: 'Real',
+                        },
+                        {
+                        value: 'Dólar',
+                        label: 'Dólar',
+                        },
+                        {
+                        value: 'Euro',
+                        label: 'Euro',
+                        },
                     ]}
                 />
-                <InputNumber
-                    className={styles.input}
-                    defaultValue={0}
-                    onChange={(value) => handleChangeValor('valor1', value)}
-                />
+                <InputNumber className={styles.input} id='valor1' /*min={1} max={10}*/ defaultValue={0} onChange={setValorAConverter} /*onChange={onChange}*/ />
             </div>
             <div className={styles.saida}>
-                <Select
-                    className={styles.select}
+            <Select className={styles.select}
                     defaultValue="Real"
-                    style={{ width: 120 }}
-                    onChange={(value) => handleChangeMoeda('moeda2', value)}
+                    style={{
+                        width: 120,
+                    }}
+                    onChange={selecionado2}
                     options={[
-                        { value: 'Real', label: 'Real' },
-                        { value: 'Dólar', label: 'Dólar' },
-                        { value: 'Euro', label: 'Euro' },
-                        // Adicione mais moedas conforme necessário
+                        {
+                        value: 'Real',
+                        label: 'Real',
+                        },
+                        {
+                        value: 'Dólar',
+                        label: 'Dólar',
+                        },
+                        {
+                        value: 'Euro',
+                        label: 'Euro',
+                        },
                     ]}
                 />
-                <InputNumber
-                    className={styles.input}
-                    defaultValue={0}
-                    value={conversao.valor2}
-                    readOnly
-                />
+                <InputNumber className={styles.input} value={valorConvertido} id='valor2' /*min={1} max={10}*/ defaultValue={0} /*onChange={onChange}*/ readOnly />
             </div>
         </section>
-    );
+    )
 }
 
-export default Home;
+export default Home

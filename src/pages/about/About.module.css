@@ -1,7 +1,10 @@
-section {
+.secAbout {
     height: 90vh;
     background-color: transparent;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: inline;
+    font-family: 'Rubik', sans-serif;
+}
+
+.containerAbout {
+    margin: 5%;
 }
